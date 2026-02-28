@@ -49,9 +49,9 @@ def check_guess(guess, secret):
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
     if outcome == "Win":
-        points = 100 - 10 * (attempt_number + 1)
+        points = 100 - 10 * (attempt_number + 1) #when user 
         if points < 10:
-            points = 10
+            points = 10 #lowest points even w/ no correct guesses is 10, to avoid negative scores
         return current_score + points
 
     if outcome == "Too High":
