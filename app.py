@@ -107,7 +107,7 @@ if "history" not in st.session_state:
 st.subheader("Make a guess")
 
 st.info(
-    f"Guess a number between {low} and {high}. "
+    f"Guess a number between {low} and {high}. "#FIXED: Range was hardcoded to 1-100 in hints
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
@@ -131,9 +131,9 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
-if new_game:
+if new_game: #Bug 4 - New game button does not reset the secret number dynamically based on difficulty, always generates between 1-100 and doesn't reset the win/loss status
     st.session_state.attempts = 0
-    st.session_state.secret = random.randint(1, 100)
+    st.session_state.secret = random.randint(1, 100) #BUG 3 - Secret number range does not change with difficulty, always 1-100
     st.success("New game started.")
     st.rerun()
 
