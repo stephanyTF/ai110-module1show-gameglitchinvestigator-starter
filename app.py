@@ -93,7 +93,7 @@ if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1 #Bug 1 - starts at 1 instead of 0, so player has one less attempt than shown in UI
+    st.session_state.attempts = 0 # FIXED: Changed from 1 to 0 | Bug 1 - starts at 1 instead of 0, so player has one less attempt than shown in UI
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -107,7 +107,7 @@ if "history" not in st.session_state:
 st.subheader("Make a guess")
 
 st.info(
-    f"Guess a number between 1 and 100. " # Bug 2 hardcoded range, todo: make dynamic based on difficulty
+    f"Guess a number between {low} and {high}. "
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
