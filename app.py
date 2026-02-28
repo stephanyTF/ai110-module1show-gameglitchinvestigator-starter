@@ -48,21 +48,20 @@ def check_guess(guess, secret):
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
+    '''
+    Fixes: 
+     - Changed score calculation to be based on efficiency (attempts used relative to attempt limit) rather than a flat deduction per attempt, to better reflect performance across different difficulties 
+     - Remove + 1 from attempt_number in points calculation to align with actual attempt count (Bug 1 fix)
+     - Remove condition if score goes below 10 bc based on the highest possible misses (8), it will never go below 10.  
+     No need to update the score unless the player wins
+     - if player loses, return 0 points instead of deducting points, to avoid negative scores 
+    '''
     if outcome == "Win":
-        points = 100 - 10 * (attempt_number + 1) #when user 
-        if points < 10:
-            points = 10 #lowest points even w/ no correct guesses is 10, to avoid negative scores
-        return current_score + points
+        efficiency = attempt_number/ attempt_limit # takes in dynamic attempt limit based on difficulty, so points are calculated fairly across difficulties )
+        points = max(10, int(100 - (efficiency * 90)))
+        return points
 
-    if outcome == "Too High":
-        if attempt_number % 2 == 0:
-            return current_score + 5
-        return current_score - 5
-
-    if outcome == "Too Low":
-        return current_score - 5
-
-    return current_score
+    return 0 #if player loses, return 0. No points should be earned if they never got the secret answer
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
@@ -76,6 +75,11 @@ difficulty = st.sidebar.selectbox(
     ["Easy", "Normal", "Hard"],
     index=1,
 )
+
+'''
+git config --global user.email "you@example.com"
+  git config --global user.name "Your Name
+'''
 
 attempt_limit_map = {
     "Easy": 6,
