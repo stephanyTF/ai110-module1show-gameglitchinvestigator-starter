@@ -27,21 +27,37 @@
 
 
 ### Phase 2: Investigate and Repair (Assigned)
+  - Fixed all 6 Bugs
+  - Reviewed and Modified AI-Generated Edit on Scoring Logic:
+     - I didn't agree w/ AI-Gen answer bc it kept a few inconsistencies:
+       - Why is the total attempts subtracted by 1? This doesn't accurately penalize each wrong answer. It seems to be giving back a free answer
+       - Also the most a user can get wrong is 8. So 8*10 = 80 and 100-80=20. Thus the if condition that when points are less than 10 will never be reached
+     - My final fixes:
+        - Changed score calculation to be based on efficiency (attempts used relative to attempt limit) rather than a flat deduction per attempt, to better reflect performance across different difficulties
+        - Remove + 1 from attempt_number in points calculation to align with actual attempt count (Bug 1 fix)
+        - Remove condition if score goes below 10 bc based on the highest possible misses (8), it will never go below 10.  
+        - No need to update the score unless the player wins
+        - if player loses, return 0 points instead of deducting points, to avoid negative scores
 
-#### Short Guiding Hint: Scoring Logic:
+    - Generated pytest cases and ran pytest successfully for Scoring and Hints
 
-- To Identify: In streamlit, expand the dev log to see how the score changes and find the function responsible for it in the app.py
-- To Refactor the Scoring Logic:
-  - If the current game logic is confusing don’t be afraid to completely change it into something that makes more sense for the game environment.
-  - Think about what would make sense for scoring in any game. A higher score reflects better performance. Think how the number of attempts used until the answer is guessed correctly reflects the user’s  performance. 
-- Some Considerations:
-  - Should a player on Easy (6 attempts) and Hard (5 attempts) get the same score for winning on attempt 2? How could scoring be fair across difficulties?"
-  - Think about how the number of attempts used (out of the total allowed) reflects the user's performance across different difficulties
-  - Formula Clue: The scoring formula should use a ratio, comparing attempts used to attempts allowed
+
+
+   #### Short Guiding Hint: Scoring Logic:
+   
+   - To Identify: In streamlit, expand the dev log to see how the score changes and find the function responsible for it in the app.py
+   - To Refactor the Scoring Logic:
+     - If the current game logic is confusing don’t be afraid to completely change it into something that makes more sense for the game environment.
+     - Think about what would make sense for scoring in any game. A higher score reflects better performance. Think how the number of attempts used until the answer is guessed correctly reflects the user’s  performance. 
+   - Some Considerations:
+     - Should a player on Easy (6 attempts) and Hard (5 attempts) get the same score for winning on attempt 2? How could scoring be fair across difficulties?"
+     - Think about how the number of attempts used (out of the total allowed) reflects the user's performance across different difficulties
+     - Formula Clue: The scoring formula should use a ratio, comparing attempts used to attempts allowed
 
 ### Phase 3: Reflection and README (Review)
 
-
+   - Students should document their debugging experience and reflect on their usage of AI gen answers including its limiitations or shortfalls.
+   - As TFs we should be prepared to help them through the reflection and updating their repo if needed.
 
 
 
