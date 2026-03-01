@@ -30,21 +30,36 @@ def parse_guess(raw: str):
 
 
 def check_guess(guess, secret):
+    #validate guess is a number and convert to int if it's a string representation of a number
+    if isinstance(guess, str):
+        try:
+            if "." in guess:
+                guess = int(float(guess))
+            else:
+                guess = int(guess)
+        except Exception:
+            return "Invalid", "That is not a number."
     if guess == secret:
         return "Win", "🎉 Correct!"
 
-    try:
-        if guess > secret:
-            return "Too High", "📈 Go HIGHER!"
-        else:
-            return "Too Low", "📉 Go LOWER!"
-    except TypeError:
-        g = str(guess)
-        if g == secret:
-            return "Win", "🎉 Correct!"
-        if g > secret:
-            return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER!"
+    #validate secret is a number and convert to int if it's a string representation of a number (Bug 2 - secret is sometimes a string, sometimes an int, so added validation to ensure it's always treated as an int for comparison and hints)
+    if isinstance(secret, str):
+        try:
+            if "." in secret:
+                secret = int(float(secret))
+            else:
+                secret = int(secret)
+        except Exception:
+            return "Invalid", "Secret number is invalid."
+        
+    #compare guess and secert and return appropriate hints
+    if guess > secret:
+        return "Too High", "📉 Go LOWER!" #Fixed! hints correclty to go lower if guess is higher than score
+    elif guess == secret:
+        return "Win", "🎉 Correct!"
+    else:
+        return "Too Low", "📈 Go HIGHER!" #Fixed! hints correclty to go higher if guess is lower than score
+
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int, attempt_limit: int = 8):
@@ -76,10 +91,6 @@ difficulty = st.sidebar.selectbox(
     index=1,
 )
 
-'''
-git config --global user.email "you@example.com"
-  git config --global user.name "Your Name
-'''
 
 attempt_limit_map = {
     "Easy": 6,

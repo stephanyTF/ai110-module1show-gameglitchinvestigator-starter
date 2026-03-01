@@ -14,6 +14,25 @@ NORMAL_LIMIT = 8
 HARD_LIMIT = 5
 
 
+class TestCheckRange:
+    def test_guess_within_range(self):
+        # If secret is 50 and guess is 50, it should be a win
+        outcome, message = check_guess(50, 50)
+        assert outcome == "Win"
+        assert "Correct" in message
+
+    def test_guess_above_range(self):
+        # If secret is 50 and guess is 150, hint should be "Too High"
+        outcome, message = check_guess(150, 50)
+        assert outcome == "Too High"
+        assert "LOWER" in message or "LOW" in message
+
+    def test_guess_below_range(self):
+        # If secret is 50 and guess is -10, hint should be "Too Low"
+        outcome, message = check_guess(-10, 50)
+        assert outcome == "Too Low"
+        assert "HIGHER" in message or "HIGH" in message
+
 class TestCheckGuess:
     def test_winning_guess(self):
         # If the secret is 50 and guess is 50, it should be a win
