@@ -47,17 +47,17 @@ def check_guess(guess, secret):
         return "Too Low", "📉 Go LOWER!"
 
 
-def update_score(current_score: int, outcome: str, attempt_number: int):
+def update_score(current_score: int, outcome: str, attempt_number: int, attempt_limit: int = 8):
     '''
     Fixes: 
      - Changed score calculation to be based on efficiency (attempts used relative to attempt limit) rather than a flat deduction per attempt, to better reflect performance across different difficulties 
      - Remove + 1 from attempt_number in points calculation to align with actual attempt count (Bug 1 fix)
      - Remove condition if score goes below 10 bc based on the highest possible misses (8), it will never go below 10.  
-     No need to update the score unless the player wins
+     - No need to update the score unless the player wins
      - if player loses, return 0 points instead of deducting points, to avoid negative scores 
     '''
     if outcome == "Win":
-        efficiency = attempt_number/ attempt_limit # takes in dynamic attempt limit based on difficulty, so points are calculated fairly across difficulties )
+        efficiency = attempt_number / attempt_limit # takes in dynamic attempt limit based on difficulty, so points are calculated fairly across difficulties
         points = max(10, int(100 - (efficiency * 90)))
         return points
 
@@ -173,6 +173,7 @@ if submit:
             current_score=st.session_state.score,
             outcome=outcome,
             attempt_number=st.session_state.attempts,
+            attempt_limit=attempt_limit,
         )
 
         if outcome == "Win":
