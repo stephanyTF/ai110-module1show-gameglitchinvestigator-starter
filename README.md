@@ -18,7 +18,6 @@
   - The hints tell the opposite of how they should change their number. 
   - For ex: when the guess is lower than the answer, the hint tells them to go lower not higher. 
 - 🐞5. [Inconsistent Scoring Logic] <app.py line lines 50-65>
-  - Unclear how to score higher?, Tried to test bug that on every even attempt when u get the “go higher” hint you increase by 5, but it doesn’t reflect accurately in the dev log?
   - Final Score is Diff than whats shown in the developer log
   - Unclear about how scoring should work
 - 🐞6. [New Game Reset] <line 134-138>
@@ -29,18 +28,9 @@
 ### Phase 2: Investigate and Repair (Assigned)
   - Fixed all 6 Bugs
   - Reviewed and Modified AI-Generated Edit on Scoring Logic:
-     - I didn't agree w/ AI-Gen answer bc it kept a few inconsistencies:
-       - Why is the total attempts subtracted by 1? This doesn't accurately penalize each wrong answer. It seems to be giving back a free answer
-       - Also the most a user can get wrong is 8. So 8*10 = 80 and 100-80=20. Thus the if condition that when points are less than 10 will never be reached
      - My final fixes:
         - Changed score calculation to be based on efficiency (attempts used relative to attempt limit) rather than a flat deduction per attempt, to better reflect performance across different difficulties
-        - Remove + 1 from attempt_number in points calculation to align with actual attempt count (Bug 1 fix)
-        - Remove condition if score goes below 10 bc based on the highest possible misses (8), it will never go below 10.  
-        - No need to update the score unless the player wins
-        - if player loses, return 0 points instead of deducting points, to avoid negative scores
-
     - Generated pytest cases and ran pytest successfully for Scoring and Hints
-
 
 
    #### Short Guiding Hint: Scoring Logic:
@@ -53,6 +43,7 @@
      - Should a player on Easy (6 attempts) and Hard (5 attempts) get the same score for winning on attempt 2? How could scoring be fair across difficulties?"
      - Think about how the number of attempts used (out of the total allowed) reflects the user's performance across different difficulties
      - Formula Clue: The scoring formula should use a ratio, comparing attempts used to attempts allowed
+
 
 ### Phase 3: Reflection and README (Review)
 
